@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.demo.mapper.CompanyMapper">
+
+    <select id="getAllCompany" resultType="Company">
+        select * from company
+        <where>
+            <if test="id != 0 and id != null and id != ''">
+                and id = #{id}
+            </if>
+            <if test="companyName != null">
+                and companyName like concat('%',#{companyName},'%')
+            </if>
+        </where>
+        limit #{page},5
+    </select>
+
+    <insert id="addCompany">
+        <if test="id == null">
+            insert into company(companyName,remarks) values(#{companyName},#{remarks})
+        </if>
+
+        <if test="id != null">
+            insert into company(id,companyName,remarks) values(#{id},#{companyName},#{remarks})
+        </if>
+    </insert>
+
+    <delete id="deleteCompany">
+        delete from company where id = #{id}
+    </delete>
+
+    <update id="updateCompany">
+        update company set id = #{id},companyName = #{companyName},remarks = #{remarks} where id = #{id}
+    </update>
+
+    <select id="getCompanyById" resultType="Company">
+        select * from company where id = #{id}
+    </select>
+
+</mapper>

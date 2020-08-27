@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.demo.mapper.DepartmentMapper">
+
+    <select id="getAllDepartment" resultType="Department">
+        select * from department
+        <where>
+            <if test="departmentName != null">
+                and departmentName like concat('%',#{departmentName},'%')
+            </if>
+            <if test="remarks != null">
+                and remarks like concat('%',#{remarks},'%')
+            </if>
+        </where>
+    </select>
+
+    <insert id="addDepartment">
+        insert into department(departmentName,remarks,createDate) values(#{departmentName},#{remarks},#{createDate})
+    </insert>
+
+    <delete id="deleteDepartment">
+        delete from department where id = #{id}
+    </delete>
+
+    <update id="updateDepartment">
+        update department set departmentName = #{departmentName},remarks = #{remarks},createDate = #{createDate} where id = #{id}
+    </update>
+
+    <select id="getDepartmentById" resultType="Department">
+        select * from department where id = #{id}
+    </select>
+</mapper>

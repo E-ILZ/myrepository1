@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.demo.mapper.WarehouseMapper">
+
+    <select id="getAllWarehouse" resultType="Warehouse">
+        select * from warehouse
+        <where>
+            <if test="id != 0 and id != null and id != ''">
+                and id = #{id}
+            </if>
+            <if test="name != null">
+                and name like concat('%',#{name},'%')
+            </if>
+            <if test="departmentID != 0 and departmentID != null and departmentID != ''">
+                and departmentID = #{departmentID}
+            </if>
+            <if test="type != 0 and type != null and type != ''">
+                and type = #{type}
+            </if>
+        </where>
+        limit #{page},5
+    </select>
+
+    <insert id="addWarehouse">
+
+        <if test="id == null">
+            insert into warehouse(departmentID,name,type,effect,leaseTime,area,address,contacts,phone)
+            values(#{departmentID},#{name},#{type},#{effect},#{leaseTime},#{area},#{address},#{contacts},#{phone})
+        </if>
+
+        <if test="id != null">
+            insert into warehouse(id,departmentID,name,type,effect,leaseTime,area,address,contacts,phone)
+            values(#{id},#{departmentID},#{name},#{type},#{effect},#{leaseTime},#{area},#{address},#{contacts},#{phone})
+        </if>
+
+    </insert>
+
+    <delete id="deleteWarehouse">
+        delete from warehouse where id = #{id}
+    </delete>
+
+    <update id="updateWarehouse">
+        update warehouse set id = #{id},departmentID = #{departmentID},name = #{name},type = #{type},
+                                effect = #{effect},leaseTime = #{leaseTime},area = #{area},address = #{address},
+                                contacts = #{contacts},phone = #{phone}
+                        where id = #{id}
+    </update>
+
+    <select id="getWareById" resultType="Warehouse">
+        select * from warehouse where id = #{id}
+    </select>
+
+</mapper>
